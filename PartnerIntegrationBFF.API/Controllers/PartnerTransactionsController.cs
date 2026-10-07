@@ -6,10 +6,10 @@ namespace PartnerIntegrationBFF.API.Controllers;
 
 [ApiController]
 [Route("api/v1/partner/transactions")]
-public class PartnerTransactionsController(ICurrencyValidator currencyValidator) : ControllerBase
+public class PartnerTransactionsController(ICurrencyValidator currencyValidator, ITransactionService transactionService) : ControllerBase
 {
     [HttpPost]
-    public IActionResult CreateTransaction([FromBody] PartnerTransactionRequest request)
+    public async Task<IActionResult> CreateTransaction([FromBody] PartnerTransactionRequest request, CancellationToken cancellationToken)
     {
         if (!currencyValidator.IsValid(request.Currency))
         {
@@ -18,6 +18,15 @@ public class PartnerTransactionsController(ICurrencyValidator currencyValidator)
                 error = $"Unsupported currency: '{request.Currency}'."
             });
         }
-        return Ok(request);
+
+        var result = await transactionService.ProcessAsync(request, cancellationToken);
+
+        return result.Status switch
+        {
+            TransactionProcessingStatus.Accepted => Ok(new { transactionId = result.TransactionId }),
+            TransactionProcessingStatus.Duplicate => Conflict(new { error = "Transaction has already been processed." }),
+            TransactionProcessingStatus.PartnerNotFoundOrInactive => BadRequest(new { error = "Partner does not exist or is inactive" }),
+            _ => StatusCode(500)
+        };
     }
 }
