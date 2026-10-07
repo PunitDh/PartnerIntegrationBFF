@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using PartnerIntegrationBFF.API.Data;
+using PartnerIntegrationBFF.API.Repositories;
 using PartnerIntegrationBFF.API.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +14,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<ICurrencyValidator, CurrencyValidator>();
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddScoped<IPartnerRepository, PartnerRepository>();
 
 var app = builder.Build();
 
