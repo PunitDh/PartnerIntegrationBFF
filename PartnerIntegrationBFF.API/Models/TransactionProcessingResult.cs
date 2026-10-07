@@ -4,6 +4,8 @@ public enum TransactionProcessingStatus
 {
     Accepted,
     PartnerNotFoundOrInactive,
+    PartnerVerificationUnavailable,
+    PartnerNotVerified,
     Duplicate
 }
 

@@ -31,6 +31,8 @@ public class PartnerTransactionsController(ICurrencyValidator currencyValidator,
             TransactionProcessingStatus.Accepted => Ok(new { transactionId = result.TransactionId }),
             TransactionProcessingStatus.Duplicate => Conflict(new { error = "Transaction has already been processed." }),
             TransactionProcessingStatus.PartnerNotFoundOrInactive => BadRequest(new { error = "Partner does not exist or is inactive" }),
+            TransactionProcessingStatus.PartnerVerificationUnavailable => StatusCode(StatusCodes.Status503ServiceUnavailable, new { error = "Partner verification service is temporarily unavailable." }),
+            TransactionProcessingStatus.PartnerNotVerified => BadRequest(new { error = "Partner could not be verified." }),
             _ => StatusCode(500)
         };
     }

@@ -63,12 +63,8 @@ Build a Backend-for-Frontend (BFF) microservice in **.NET 8** that:
 
 ### Relationships
 
-```text
-Partner (1)
-   |
-   |
-   +----< PartnerTransaction (Many)
-```
+![Entity Relationship Diagram](./ERD.png "Entity Relationship Diagram")
+
 
 ### Requirements
 
