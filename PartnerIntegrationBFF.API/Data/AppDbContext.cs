@@ -27,6 +27,26 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
 
             entity.HasIndex(p => p.PartnerCode)
                 .IsUnique();
+
+            entity.HasData(new
+            {
+                Id = 1,
+                PartnerCode = "P-1001",
+                Name = "AcmeCorp",
+                IsActive = true
+            }, new
+            {
+                Id = 2,
+                PartnerCode = "P-1002",
+                Name = "Globex",
+                IsActive = true
+            }, new
+            {
+                Id = 3,
+                PartnerCode = "P-1003",
+                Name = "Umbrella",
+                IsActive = false
+            });
         });
 
         modelBuilder.Entity<PartnerTransaction>(entity =>
