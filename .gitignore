@@ -43,3 +43,7 @@ logs/
 .DS_Store
 Thumbs.db
 Desktop.ini
+
+*.db
+*.db-shm
+*.db-wal
