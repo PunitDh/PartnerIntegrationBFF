@@ -1,5 +1,45 @@
-bin/
-obj/
+# .NET build and publish output
+[Bb]in/
+[Oo]bj/
+artifacts/
+
+# NuGet packages (keep NuGet.Config and package lock files tracked)
 /packages/
-riderModule.iml
-/_ReSharper.Caches/
+*.nupkg
+*.snupkg
+
+# Rider / ReSharper
+.idea/
+*.iml
+_ReSharper*/
+*.DotSettings.user
+
+# Visual Studio user settings and caches
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Test results and coverage output
+TestResults/
+coverage/
+coverage-report/
+*.coverage
+*.coveragexml
+
+# Local logs
+logs/
+*.log
+
+# Local environment variables and publish credentials
+.env
+.env.*
+!.env.example
+!.env.sample
+*.pubxml.user
+
+# OS-generated files
+.DS_Store
+Thumbs.db
+Desktop.ini
