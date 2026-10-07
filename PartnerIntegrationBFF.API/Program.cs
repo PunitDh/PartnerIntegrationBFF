@@ -2,12 +2,14 @@ using Microsoft.EntityFrameworkCore;
 using PartnerIntegrationBFF.API.Data;
 using PartnerIntegrationBFF.API.Repositories;
 using PartnerIntegrationBFF.API.Services;
+using Swashbuckle.AspNetCore.SwaggerGen;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+
+builder.Services.AddSwaggerGen(SetupAction);
 builder.Services.AddSingleton<ICurrencyValidator, CurrencyValidator>();
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -31,3 +33,10 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+return;
+
+void SetupAction(SwaggerGenOptions options)
+{
+    ArgumentNullException.ThrowIfNull(options);
+    options.EnableAnnotations();
+}

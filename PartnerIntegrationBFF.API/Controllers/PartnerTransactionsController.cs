@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PartnerIntegrationBFF.API.Models;
 using PartnerIntegrationBFF.API.Services;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace PartnerIntegrationBFF.API.Controllers;
 
@@ -9,6 +10,10 @@ namespace PartnerIntegrationBFF.API.Controllers;
 public class PartnerTransactionsController(ICurrencyValidator currencyValidator, ITransactionService transactionService) : ControllerBase
 {
     [HttpPost]
+    [SwaggerOperation(
+        Summary = "Create partner transaction",
+        Description = "Validates and processes an incoming partner transaction."
+    )]
     public async Task<IActionResult> CreateTransaction([FromBody] PartnerTransactionRequest request, CancellationToken cancellationToken)
     {
         if (!currencyValidator.IsValid(request.Currency))
