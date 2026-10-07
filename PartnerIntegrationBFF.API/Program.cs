@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using PartnerIntegrationBFF.API.Clients;
 using PartnerIntegrationBFF.API.Data;
 using PartnerIntegrationBFF.API.Repositories;
 using PartnerIntegrationBFF.API.Services;
@@ -17,6 +18,17 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddScoped<IPartnerRepository, PartnerRepository>();
 builder.Services.AddScoped<ITransactionService, TransactionService>();
 
+builder.Services.AddHttpClient<IPartnerVerificationClient, PartnerVerificationClient>(client =>
+{
+    client.BaseAddress = new Uri(
+        builder.Configuration["PartnerVerificationApi:BaseUrl"] 
+        ?? throw new InvalidOperationException()
+    );
+}).AddStandardResilienceHandler(options =>
+{
+    options.Retry.MaxRetryAttempts = 3;
+    options.Retry.Delay = TimeSpan.FromMilliseconds(200);
+});
 
 var app = builder.Build();
 
